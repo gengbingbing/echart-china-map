@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=EDGE">
+  <title>新冠肺炎确诊病例分布图</title>
+  <style>
+    #china-map {
+      width: 3200px;
+      height: 2400px;
+      margin: auto;
+	    margin-top: 20px;
+    }
+    #box{
+        display:none;
+        background-color: goldenrod;
+        width: 180px;
+        height: 30px;
+    }
+    #box-title{
+        display:block;
+    }
+	.back {
+		text-align: center;
+	}
+	#back {
+		border: 0;
+		background: #0008ffad;
+		padding: 8px 15px;
+		border-radius: 5px;
+		color: #FFFFFF;
+	}
+  </style>
+  <script src="http://www.jq22.com/jquery/jquery-1.10.2.js"></script>
+  <script type="text/javascript" src="https://cdn.bootcss.com/echarts/4.2.0-rc.2/echarts.min.js"></script>
+  <script type="text/javascript" src="./js/map/china.js"></script>
+</head>
+
+<body>
+
+  <div id="china-map"></div>
+
+  <script>
+    var heilongjiangData = [
+      {
+        name: 'Harbin',
+        value: 198,
+      }, {
+        name: 'Jixi City',
+        value: 46,
+      }, {
+        name: 'Shuangyashan City',
+        value: 52,
+      }, {
+        name: 'Suihua City',
+        value: 47,
+      }, {
+        name: 'Qiqihar City',
+        value: 43,
+      }, {
+        name: 'Daqing City',
+        value: 26,
+      }, {
+        name: 'Jiamusi City',
+        value: 15,
+      }, {
+        name: 'Qitaihe City',
+        value: 17,
+      }, {
+        name: 'Heihe City',
+        value: 14,
+      }, {
+        name: 'Mudanjiang City',
+        value: 15,
+      }, {
+        name: 'Hegang City',
+        value: 6,
+      }, {
+        name: 'Greater Khingan Mountains',
+        value: 2,
+      }, {
+        name: 'Yichun City',
+        value: 1,
+      }
+    ]
+
+    var liaoningData = [
+      {
+        name: 'Shenyang City',
+        value: 28,
+      }, {
+        name: 'Dalian City',
+        value: 19,
+      }, {
+        name: 'Anshan City',
+        value: 4,
+      }, {
+        name: 'Benxi City',
+        value: 3,
+      }, {
+        name: 'Dandong City',
+        value: 11,
+      }, {
+        name: 'Jinzhou City',
+        value: 12,
+      }, {
+        name: 'Yingkou City',
+        value: 1,
+      }, {
+        name: 'Fuxin City',
+        value: 8,
+      }, {
+        name: 'Liaoyang City',
+        value: 3,
+      }, {
+        name: 'Tieling City',
+        value: 7,
+      }, {
+        name: 'Chaoyang City',
+        value: 6,
+      }, {
+        name: 'Panjin City',
+        value: 11,
+      }, {
+        name: 'Huludao City',
+        value: 12,
+      }
+    ]
+
+    var jilinData = [
+      {
+        name: 'Changchun City',
+        value: 45,
+      }, {
+        name: 'Siping City',
+        value: 15,
+      }, {
+        name: 'Liaoyuan City',
+        value: 7,
+      }, {
+        name: 'Gongzhuling City',
+        value: 6,
+      }, {
+        name: 'Jilin City',
+        value: 5,
+      }, {
+        name: 'Yanbian Korean Autonomous Prefecture',
+        value: 5,
+      }, {
+        name: 'Tonghua City',
+        value: 6,
+      }, {
+        name: 'Songyuan City',
+        value: 2,
+      }, {
+        name: 'Meihekou City',
+        value: 1,
+      }, {
+        name: 'Baicheng City',
+        value: 1,
+      }
+    ]
+
+    var myChart = echarts.init(document.getElementById('china-map'));
+    // var oBack = document.getElementById("back");
+
+    var provinces = ['shanghai', 'hebei', 'shanxi', 'neimenggu', 'Liaoning', 'Jilin', 'Heilongjiang', 'jiangsu', 'zhejiang', 'anhui', 'fujian', 'jiangxi', 'shandong', 'henan', 'hubei', 'hunan', 'guangdong', 'guangxi', 'hainan', 'sichuan', 'guizhou', 'yunnan', 'xizang', 'shanxi1', 'gansu', 'qinghai', 'ningxia', 'xinjiang', 'beijing', 'tianjin', 'chongqing', 'xianggang', 'aomen'];
+
+    var provincesText = ['上海', '河北', '山西', '内蒙古', '辽宁', '吉林', '黑龙江', '江苏', '浙江', '安徽', '福建', '江西', '山东', '河南', '湖北', '湖南', '广东', '广西', '海南', '四川', '贵州', '云南', '西藏', '陕西', '甘肃', '青海', '宁夏', '新疆', '北京', '天津', '重庆', '香港', '澳门'];
+	
+    var beijingData = [{
+      name: '延庆区',
+      value: 565,
+      itemStyle:{
+        areaColor:'#ff0000'
+        }
+    }, {
+      name: '密云区',
+      value: 5555565
+    }]
+    
+    var henanData = [{
+      name: '洛阳市',
+      value: 565,
+      itemStyle:{
+        areaColor:'#ff0000'
+        }
+    }, {
+      name: '郑州市',
+      value: 5555565
+    }]
+
+    var seriesData = [{
+      name: 'Beijing',
+      value: 418,
+    }, {
+      name: 'Tianjin',
+      value: 136
+    }, {
+      name: 'Shanghai',
+      value: 338
+    }, {
+      name: 'Chongqing',
+      value: 576
+    }, {
+      name: 'Hebei',
+      value: 318
+    }, {
+      name: 'Henan',
+      value: 1272,
+    }, {
+      name: 'Yunnan',
+      value: 174
+    }, {
+      name: 'Liaoning',
+      value: 125
+    }, {
+      name: 'Heilongjiang',
+      value: 481
+    }, {
+      name: 'Hunan',
+      value: 1018
+    }, {
+      name: 'Anhui',
+      value: 990
+    }, {
+      name: 'Shandong',
+      value: 758
+    }, {
+      name: 'Xinjiang',
+      value: 76,
+    }, {
+      name: 'Jiangsu',
+      value: 631
+    }, {
+      name: 'Zhejiang',
+      value: 1215
+    }, {
+      name: 'Jiangxi',
+      value: 935
+    }, {
+      name: 'Hubei',
+      value: 67466
+    }, {
+      name: 'Guangxi',
+      value: 252
+    }, {
+      name: 'Gansu',
+      value: 91
+    }, {
+      name: 'Shanxi',
+      value: 133
+    }, {
+      name: 'Inner Mongolia',
+      value: 75
+    }, {
+      name: 'Shaanxi',
+      value: 245
+    }, {
+      name: 'Jilin',
+      value: 93
+    }, {
+      name: 'Fujian',
+      value: 296
+    }, {
+      name: 'Guizhou',
+      value: 146
+    }, {
+      name: 'Guangdong',
+      value: 1350
+    }, {
+      name: 'Qinghai',
+      value: 18
+    }, {
+      name: 'Tibet',
+      value: 1,
+    }, {
+      name: 'Sichuan',
+      value: 539,
+    }, {
+      name: 'Ningxia',
+      value: 75
+    }, {
+      name: 'Hainan',
+      value: 168
+    }, {
+      name: 'Taiwan',
+      value: 42
+    }, {
+      name: 'Hong Kong',
+      value: 104
+    }, {
+      name: 'Macau',
+      value: 10
+    }];
+
+    initEcharts("china", "中国");
+
+    // 初始化echarts
+    function initEcharts(pName, Chinese_) {
+      var tmpSeriesData = seriesData;
+      if(pName === "china") {
+        tmpSeriesData = seriesData
+      } else if(pName === "黑龙江") {
+        tmpSeriesData = heilongjiangData
+      } else if(pName === "辽宁") {
+        tmpSeriesData = liaoningData
+      } else if(pName === "吉林") {
+        tmpSeriesData = jilinData
+      }
+
+      var option = {
+        title: {
+          text: Chinese_ ? 
+            'Covid-19 case distribution in China as of March 4, 2020' : 
+            pName === "黑龙江" ? 'Distribution of covid-19 cases in Heilongjiang province as of March 4, 2020' : 
+            pName === "辽宁" ? 'Distribution of covid-19 cases in Liaoning province as of March 4, 2020' : 
+            pName === "吉林" ? 'Distribution of covid-19 cases in Jilin province as of March 4, 2020' : '',
+          left: 'center'
+        },
+        toolbox: {
+          show: true,
+          orient : 'vertical',
+          x: 'right',
+          y: 'center',
+          feature : {
+            saveAsImage : {show: true}
+          }
+        },
+        dataRange: {
+            x: 'left',
+            y: 'bottom',
+            splitList: [
+                {start: 1500},
+                {start: 900, end: 1500},
+                {start: 310, end: 1000},
+                {start: 200, end: 300},
+                // {start: 10, end: 200, label: '10 到 200（自定义label）'},
+                {start: 10, end: 200},
+                {end: 10}
+            ],
+            color: ['red', 'yellow']
+        },
+        tooltip: {
+          show: true,
+          formatter: function(params) {
+            if (params.data) 
+              return params.name + '：' + params.data['value']
+          },
+        },
+        series: [
+          {
+            name: Chinese_ || pName,
+            type: 'map',
+            mapType: pName,
+            roam: false,//是否开启鼠标缩放和平移漫游
+            data: tmpSeriesData,
+            top: "15%",//组件距离容器的距离
+              zoom:1.1,
+              selectedMode : 'single',
+
+              label: {
+                  normal: {
+                      show: true,//显示省份标签
+                      textStyle:{
+                        color:"#000000",
+                        fontFamily: "Times New Roman",
+                        fontWeight: "bold",
+                        fontSize: "36"
+                      }//省份标签字体颜色
+                  },
+                  emphasis: {//对应的鼠标悬浮效果
+                      show: true,
+                      textStyle:{color:"#323232"}
+                  }
+              },
+              itemStyle: {
+                  normal: {
+                      borderWidth: .5,//区域边框宽度
+                      borderColor: '#0550c3',//区域边框颜色
+                      areaColor:"#CCE8D1",//区域颜色
+
+                  },
+
+                  emphasis: {
+                      borderWidth: .5,
+                      borderColor: '#4b0082',
+                      areaColor:"#ece39e",
+                  }
+              },
+          }
+        ]
+
+           };
+
+      myChart.setOption(option);
+
+      myChart.off("click");
+
+      if (pName === "china") { // 全国时，添加click 进入省级
+        myChart.on('click', function (param) {
+          console.log(param.name, param);
+          // 遍历取到provincesText 中的下标  去拿到对应的省js
+          for (var i = 0; i < provincesText.length; i++) {
+            if (param.name === provinces[i]) {
+              //显示对应省份的方法
+              showProvince(provinces[i], provincesText[i]);
+              break;
+            }
+          }
+            if (param.componentType === 'series') {
+                var provinceName =param.name;
+                $('#box').css('display','block');
+                $("#box-title").html(provinceName);
+
+            }
+        });
+      } else { // 省份，添加双击 回退到全国
+        myChart.on("dblclick", function () {
+          initEcharts("china", "中国");
+        });
+      }
+    }
+
+    // 展示对应的省
+    function showProvince(pName, Chinese_) {
+      //这写省份的js都是通过在线构建工具生成的，保存在本地，需要时加载使用即可，最好不要一开始全部直接引入。
+      loadBdScript('$' + pName + 'JS', './js/map/province/' + pName + '.js', function () {
+        initEcharts(Chinese_);
+      });
+    }
+
+    // 加载对应的JS
+    function loadBdScript(scriptId, url, callback) {
+      var script = document.createElement("script");
+      script.type = "text/javascript";
+      if (script.readyState) {  //IE
+        script.onreadystatechange = function () {
+          if (script.readyState === "loaded" || script.readyState === "complete") {
+            script.onreadystatechange = null;
+            callback();
+          }
+        };
+      } else {  // Others
+        script.onload = function () {
+          callback();
+        };
+      }
+      script.src = url;
+      script.id = scriptId;
+      document.getElementsByTagName("head")[0].appendChild(script);
+    };
+  </script>
+</body>
+
+</html>
