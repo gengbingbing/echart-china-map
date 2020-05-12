@@ -4,11 +4,13 @@
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=EDGE">
+  <!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
   <title>新冠肺炎确诊病例分布图</title>
   <style>
     #china-map {
-      width: 3200px;
-      height: 2400px;
+      width: 1000px;
+      height: 800px;
       margin: auto;
 	    margin-top: 20px;
     }
@@ -32,16 +34,64 @@
 		color: #FFFFFF;
 	}
   </style>
+  <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
   <script src="http://www.jq22.com/jquery/jquery-1.10.2.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
   <script type="text/javascript" src="https://cdn.bootcss.com/echarts/4.2.0-rc.2/echarts.min.js"></script>
   <script type="text/javascript" src="./js/map/china.js"></script>
 </head>
 
 <body>
-
-  <div id="china-map"></div>
+  <div>
+    <div id="from" style="padding: 20px;">
+      <div class="row">
+        <div class="col-md-4">
+          <label style=" line-height: 34px;">选择地图：</label>
+          <div class="dropdown" style="display: inline;">
+            <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              新冠分布地图
+              <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" id="mapType" aria-labelledby="dropdownMenu2">
+              <li><a href="#">确诊地图</a></li>
+              <li><a href="#">死亡地图</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <label style=" line-height: 34px;">字体大小：</label>
+          <div class="input-group" style="width: 280px; display: inline-flex;">
+            <input id="fontSize" type="text" class="form-control" value="16" placeholder="输入字体大小...">
+            <span class="input-group-btn">
+              <button onclick="changeSize()" class="btn btn-default" type="button">Go!</button>
+            </span>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <label style=" line-height: 34px;">选择分辨率：</label>
+          <div class="dropdown" style="display: inline;">
+            <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              地图分辨率
+              <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" id="dropdown-menu-fenbianlv" aria-labelledby="dropdownMenu2">
+              <li><a href="#">1000 * 800</a></li>
+              <li><a href="#">1800 * 1200</a></li>
+              <li><a href="#">3600 * 2400</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="china-map"></div>
+  </div>
 
   <script>
+    window.mapObj = {
+      flg: 0,
+      fontSize: '16'
+    }
+
     var heilongjiangData = [
       {
         name: 'Harbin',
@@ -84,7 +134,6 @@
         value: 1,
       }
     ]
-
     var liaoningData = [
       {
         name: 'Shenyang City',
@@ -127,7 +176,6 @@
         value: 12,
       }
     ]
-
     var jilinData = [
       {
         name: 'Changchun City',
@@ -162,6 +210,80 @@
       }
     ]
 
+    var heilongjiangErrData = [
+      {
+        name: 'Harbin',
+        value: 4,
+      },
+      {
+        name: 'Shuangyashan City',
+        value: 3,
+      },
+      {
+        name: 'Suihua City',
+        value: 4,
+      },
+      {
+        name: 'Qiqihar City',
+        value: 1,
+      },
+      {
+        name: 'Daqing City',
+        value: 1,
+      },
+      {
+        name: 'Hegang City',
+        value: 1,
+      }
+    ]
+    var liaoningErrData = [
+      {
+        name: 'Huludao City',
+        value: 1,
+      }
+    ]
+    var jilinErrData = [
+      {
+        name: 'Siping City',
+        value: 1,
+      }
+    ]
+
+    $('#dropdown-menu-fenbianlv').on('click', function (e) {
+      if(e.target.text === "1000 * 800" ) {
+        $('#china-map').css({"width": "1000", "height": "800"});
+        initEcharts("china", "中国", window.mapObj.flg);
+      } else if(e.target.text === "1800 * 1200"){
+        $('#china-map').css({"width": "1800", "height": "1200"});
+        initEcharts("china", "中国", window.mapObj.flg);
+      } else {
+        $('#china-map').css({"width": "3600", "height": "2400"});
+        initEcharts("china", "中国", window.mapObj.flg);
+      }
+    })
+
+    $('#mapType').on('click', function (e) {
+      if(e.target.text === "确诊地图" ) {
+        initEcharts("china", "中国", 0);
+        window.mapObj.flg = 0;
+      } else {
+        initEcharts("china", "中国", 1);
+        window.mapObj.flg = 1;
+      }
+    })
+
+    function changeSize() {
+      var val = $('#fontSize').val()
+      console.log(val);
+      window.mapObj.fontSize = val;
+
+      initEcharts("china", "中国", window.mapObj.flg);
+    }
+  </script>
+
+
+  <script>
+    
     var myChart = echarts.init(document.getElementById('china-map'));
     // var oBack = document.getElementById("back");
 
@@ -169,28 +291,6 @@
 
     var provincesText = ['上海', '河北', '山西', '内蒙古', '辽宁', '吉林', '黑龙江', '江苏', '浙江', '安徽', '福建', '江西', '山东', '河南', '湖北', '湖南', '广东', '广西', '海南', '四川', '贵州', '云南', '西藏', '陕西', '甘肃', '青海', '宁夏', '新疆', '北京', '天津', '重庆', '香港', '澳门'];
 	
-    var beijingData = [{
-      name: '延庆区',
-      value: 565,
-      itemStyle:{
-        areaColor:'#ff0000'
-        }
-    }, {
-      name: '密云区',
-      value: 5555565
-    }]
-    
-    var henanData = [{
-      name: '洛阳市',
-      value: 565,
-      itemStyle:{
-        areaColor:'#ff0000'
-        }
-    }, {
-      name: '郑州市',
-      value: 5555565
-    }]
-
     var seriesData = [{
       name: 'Beijing',
       value: 418,
@@ -295,19 +395,47 @@
       value: 10
     }];
 
+    var seriesErrData = [
+      {
+        name: 'Liaoning',
+        value: 1
+      }, {
+        name: 'Heilongjiang',
+        value: 14
+      },{
+        name: 'Jilin',
+        value: 1
+      }
+    ];
+
     initEcharts("china", "中国");
 
     // 初始化echarts
-    function initEcharts(pName, Chinese_) {
-      var tmpSeriesData = seriesData;
-      if(pName === "china") {
-        tmpSeriesData = seriesData
-      } else if(pName === "黑龙江") {
-        tmpSeriesData = heilongjiangData
-      } else if(pName === "辽宁") {
-        tmpSeriesData = liaoningData
-      } else if(pName === "吉林") {
-        tmpSeriesData = jilinData
+    function initEcharts(pName, Chinese_, flg) {
+      console.log(flg);
+      if(flg === 1) {
+        // 死亡分布图
+        var tmpSeriesData = seriesErrData;
+        if(pName === "china") {
+          tmpSeriesData = seriesErrData
+        } else if(pName === "黑龙江") {
+          tmpSeriesData = heilongjiangErrData
+        } else if(pName === "辽宁") {
+          tmpSeriesData = liaoningErrData
+        } else if(pName === "吉林") {
+          tmpSeriesData = jilinErrData
+        }
+      } else {
+        var tmpSeriesData = seriesData;
+        if(pName === "china") {
+          tmpSeriesData = seriesData
+        } else if(pName === "黑龙江") {
+          tmpSeriesData = heilongjiangData
+        } else if(pName === "辽宁") {
+          tmpSeriesData = liaoningData
+        } else if(pName === "吉林") {
+          tmpSeriesData = jilinData
+        }
       }
 
       var option = {
@@ -328,7 +456,20 @@
             saveAsImage : {show: true}
           }
         },
-        dataRange: {
+        dataRange: flg === 1 ? {
+            x: 'left',
+            y: 'bottom',
+            splitList: [
+                {start: 5},
+                {start: 4, end: 5},
+                {start: 3, end: 4},
+                {start: 1, end: 2},
+                {end: 0}
+            ],
+            color: ['#000000', '#fd0000']
+        }
+        :
+        {
             x: 'left',
             y: 'bottom',
             splitList: [
@@ -336,7 +477,6 @@
                 {start: 900, end: 1500},
                 {start: 310, end: 1000},
                 {start: 200, end: 300},
-                // {start: 10, end: 200, label: '10 到 200（自定义label）'},
                 {start: 10, end: 200},
                 {end: 10}
             ],
@@ -367,7 +507,7 @@
                         color:"#000000",
                         fontFamily: "Times New Roman",
                         fontWeight: "bold",
-                        fontSize: "36"
+                        fontSize: window.mapObj.fontSize
                       }//省份标签字体颜色
                   },
                   emphasis: {//对应的鼠标悬浮效果
@@ -395,6 +535,7 @@
            };
 
       myChart.setOption(option);
+      myChart.resize();
 
       myChart.off("click");
 
@@ -405,7 +546,7 @@
           for (var i = 0; i < provincesText.length; i++) {
             if (param.name === provinces[i]) {
               //显示对应省份的方法
-              showProvince(provinces[i], provincesText[i]);
+              showProvince(provinces[i], provincesText[i], flg);
               break;
             }
           }
@@ -418,16 +559,16 @@
         });
       } else { // 省份，添加双击 回退到全国
         myChart.on("dblclick", function () {
-          initEcharts("china", "中国");
+          initEcharts("china", "中国", flg);
         });
       }
     }
 
     // 展示对应的省
-    function showProvince(pName, Chinese_) {
+    function showProvince(pName, Chinese_, flg) {
       //这写省份的js都是通过在线构建工具生成的，保存在本地，需要时加载使用即可，最好不要一开始全部直接引入。
       loadBdScript('$' + pName + 'JS', './js/map/province/' + pName + '.js', function () {
-        initEcharts(Chinese_);
+        initEcharts(Chinese_, flg, flg);
       });
     }
 
