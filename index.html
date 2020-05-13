@@ -38,7 +38,7 @@
   <script src="http://www.jq22.com/jquery/jquery-1.10.2.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
   <script type="text/javascript" src="https://cdn.bootcss.com/echarts/4.2.0-rc.2/echarts.min.js"></script>
-  <script type="text/javascript" src="./js/map/china.js"></script>
+  <!-- <script type="text/javascript" src="./js/map/china.js"></script> -->
 </head>
 
 <body>
@@ -82,6 +82,41 @@
           </div>
         </div>
       </div>
+
+      <div class="row">
+        <div class="col-md-4">
+          <label style=" line-height: 34px;">选择语言：</label>
+          <div class="dropdown" style="display: inline;">
+            <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              选择语言
+              <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" id="mapLang" aria-labelledby="dropdownMenu2">
+              <li><a href="#">中文</a></li>
+              <li><a href="#">英文</a></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <label style=" line-height: 34px;">选择字体：</label>
+          <div class="dropdown" style="display: inline;">
+            <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              选择字体
+              <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" id="fontFamily" aria-labelledby="dropdownMenu2">
+              <li><a href="#">微软雅黑</a></li>
+              <li><a href="#">黑体</a></li>
+              <li><a href="#">Times New Roman</a></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <button onclick="downLoad()" style="background-color: #039bff; color: #FFFFFF;" type="button" class="btn btn-default">下载为图片</button>
+        </div>
+      </div>
     </div>
     <div id="china-map"></div>
   </div>
@@ -89,7 +124,9 @@
   <script>
     window.mapObj = {
       flg: 0,
-      fontSize: '16'
+      fontSize: '16',
+      lang: 'en',
+      fontFamily: 'Times New Roman'
     }
 
     var heilongjiangData = [
@@ -209,6 +246,125 @@
         value: 1,
       }
     ]
+    var heilongjiangZhData = [
+      {
+        name: '哈尔滨市',
+        value: 198,
+      }, {
+        name: '鸡西市',
+        value: 46,
+      }, {
+        name: '双鸭山市',
+        value: 52,
+      }, {
+        name: '绥化市',
+        value: 47,
+      }, {
+        name: '齐齐哈尔市',
+        value: 43,
+      }, {
+        name: '大庆市',
+        value: 26,
+      }, {
+        name: '佳木斯市',
+        value: 15,
+      }, {
+        name: '七台河市',
+        value: 17,
+      }, {
+        name: '黑河市',
+        value: 14,
+      }, {
+        name: '牡丹江市',
+        value: 15,
+      }, {
+        name: '鹤岗市',
+        value: 6,
+      }, {
+        name: '大兴安岭地区',
+        value: 2,
+      }, {
+        name: '伊春市',
+        value: 1,
+      }
+    ];
+    var liaoningZhData = [
+      {
+        name: '沈阳市',
+        value: 28,
+      }, {
+        name: '大连市',
+        value: 19,
+      }, {
+        name: '鞍山市',
+        value: 4,
+      }, {
+        name: '本溪市',
+        value: 3,
+      }, {
+        name: '丹东市',
+        value: 11,
+      }, {
+        name: '锦州市',
+        value: 12,
+      }, {
+        name: '营口市',
+        value: 1,
+      }, {
+        name: '阜新市',
+        value: 8,
+      }, {
+        name: '辽阳市',
+        value: 3,
+      }, {
+        name: '铁岭市',
+        value: 7,
+      }, {
+        name: '朝阳市',
+        value: 6,
+      }, {
+        name: '盘锦市',
+        value: 11,
+      }, {
+        name: '葫芦岛市',
+        value: 12,
+      }
+    ];
+    var jilinZhData = [
+      {
+        name: '长春市',
+        value: 45,
+      }, {
+        name: '四平市',
+        value: 15,
+      }, {
+        name: '辽源市',
+        value: 7,
+      }, {
+        name: '公主岭市',
+        value: 6,
+      }, {
+        name: '吉林市',
+        value: 5,
+      }, {
+        name: '延边朝鲜族自治州',
+        value: 5,
+      }, {
+        name: '通化市',
+        value: 6,
+      }, {
+        name: '松原市',
+        value: 2,
+      }, {
+        name: '梅河口市',
+        value: 1,
+      }, {
+        name: '白城市',
+        value: 1,
+      }
+    ];
+	
+
 
     var heilongjiangErrData = [
       {
@@ -249,6 +405,46 @@
       }
     ]
 
+    var heilongjiangErrZhData = [
+      {
+        name: '哈尔滨市',
+        value: 4,
+      },
+      {
+        name: '双鸭山市',
+        value: 3,
+      },
+      {
+        name: '绥化市',
+        value: 4,
+      },
+      {
+        name: '齐齐哈尔市',
+        value: 1,
+      },
+      {
+        name: '大庆市',
+        value: 1,
+      },
+      {
+        name: '鹤岗市',
+        value: 1,
+      }
+    ]
+    var liaoningErrZhData = [
+      {
+        name: '葫芦岛市',
+        value: 1,
+      }
+    ]
+    var jilinErrZhData = [
+      {
+        name: '四平市',
+        value: 1,
+      }
+    ];
+
+
     $('#dropdown-menu-fenbianlv').on('click', function (e) {
       if(e.target.text === "1000 * 800" ) {
         $('#china-map').css({"width": "1000", "height": "800"});
@@ -272,6 +468,46 @@
       }
     })
 
+    // 切换中英文
+    $('#mapLang').on('click', function (e) {
+      if(e.target.text === "英文" ) {
+        window.mapObj.lang = 'en';
+        loadBdScript('$ChinaJS', './js/map/china.js', function () {
+          initEcharts("china", "中国", window.mapObj.flg);
+        });
+      } else {
+        window.mapObj.lang = 'zh';
+        loadBdScript('$ChinaJS', './js/mapZh/china.js', function () {
+          initEcharts("china", "中国", window.mapObj.flg);
+        });
+      }
+    })
+    
+    // 切换字体
+    $('#fontFamily').on('click', function (e) {
+      if(e.target.text === "微软雅黑" ) {
+        window.mapObj.fontFamily = "微软雅黑";
+        initEcharts("china", "中国", window.mapObj.flg);
+      } else if(e.target.text === "黑体") {
+        window.mapObj.fontFamily = "黑体";
+      } else {
+        window.mapObj.fontFamily = "Times New Roman";
+        initEcharts("china", "中国", window.mapObj.flg);
+      }
+    })
+
+    function downLoad() {
+      var mycanvas = $("#china-map").find("canvas")[0];
+ 
+      var image = mycanvas.toDataURL("image/png");
+  
+      var $a = document.createElement('a');
+      $a.setAttribute("href", image);
+      $a.setAttribute("style", "background: #FFFFFF");
+      $a.setAttribute("download", "map");
+      $a.click();
+    }
+
     function changeSize() {
       var val = $('#fontSize').val()
       console.log(val);
@@ -281,8 +517,10 @@
     }
   </script>
 
-
   <script>
+    loadBdScript('$ChinaJS', './js/map/china.js', function () {
+      initEcharts("china", "中国", window.mapObj.flg);
+    });
     
     var myChart = echarts.init(document.getElementById('china-map'));
     // var oBack = document.getElementById("back");
@@ -292,6 +530,11 @@
     var provincesText = ['上海', '河北', '山西', '内蒙古', '辽宁', '吉林', '黑龙江', '江苏', '浙江', '安徽', '福建', '江西', '山东', '河南', '湖北', '湖南', '广东', '广西', '海南', '四川', '贵州', '云南', '西藏', '陕西', '甘肃', '青海', '宁夏', '新疆', '北京', '天津', '重庆', '香港', '澳门'];
 	
     var seriesData = [{
+      name:"南海诸岛",
+      label: {
+        show: false // 隐藏文字
+      }
+    }, {
       name: 'Beijing',
       value: 418,
     }, {
@@ -394,6 +637,109 @@
       name: 'Macau',
       value: 10
     }];
+    var seriesZhData = [{
+      name: '北京',
+      value: 418,
+    }, {
+      name: '天津',
+      value: 136
+    }, {
+      name: '上海',
+      value: 338
+    }, {
+      name: '重庆',
+      value: 576
+    }, {
+      name: '河北',
+      value: 318
+    }, {
+      name: '河南',
+      value: 1272,
+    }, {
+      name: '云南',
+      value: 174
+    }, {
+      name: '辽宁',
+      value: 125
+    }, {
+      name: '黑龙江',
+      value: 481
+    }, {
+      name: '湖南',
+      value: 1018
+    }, {
+      name: '安徽',
+      value: 990
+    }, {
+      name: '山东',
+      value: 758
+    }, {
+      name: '新疆',
+      value: 76,
+    }, {
+      name: '江苏',
+      value: 631
+    }, {
+      name: '浙江',
+      value: 1215
+    }, {
+      name: '江西',
+      value: 935
+    }, {
+      name: '湖北',
+      value: 67466
+    }, {
+      name: '广西',
+      value: 252
+    }, {
+      name: '甘肃',
+      value: 91
+    }, {
+      name: '山西',
+      value: 133
+    }, {
+      name: '内蒙古',
+      value: 75
+    }, {
+      name: '陕西',
+      value: 245
+    }, {
+      name: '吉林',
+      value: 93
+    }, {
+      name: '福建',
+      value: 296
+    }, {
+      name: '贵州',
+      value: 146
+    }, {
+      name: '广东',
+      value: 1350
+    }, {
+      name: '青海',
+      value: 18
+    }, {
+      name: '西藏',
+      value: 1,
+    }, {
+      name: '四川',
+      value: 539,
+    }, {
+      name: '宁夏',
+      value: 75
+    }, {
+      name: '海南',
+      value: 168
+    }, {
+      name: '台湾',
+      value: 42
+    }, {
+      name: '香港',
+      value: 104
+    }, {
+      name: '澳门',
+      value: 10
+    }];
 
     var seriesErrData = [
       {
@@ -407,6 +753,18 @@
         value: 1
       }
     ];
+    var seriesErrZhData = [
+      {
+        name: '辽宁',
+        value: 1
+      }, {
+        name: '黑龙江',
+        value: 14
+      },{
+        name: '吉林',
+        value: 1
+      }
+    ];
 
     initEcharts("china", "中国");
 
@@ -415,26 +773,26 @@
       console.log(flg);
       if(flg === 1) {
         // 死亡分布图
-        var tmpSeriesData = seriesErrData;
+        var tmpSeriesData = window.mapObj.lang === 'en' ? seriesErrData : seriesErrZhData;
         if(pName === "china") {
-          tmpSeriesData = seriesErrData
+          tmpSeriesData = window.mapObj.lang === 'en' ? seriesErrData : seriesErrZhData
         } else if(pName === "黑龙江") {
-          tmpSeriesData = heilongjiangErrData
+          tmpSeriesData = window.mapObj.lang === 'en' ? heilongjiangErrData : heilongjiangErrZhData
         } else if(pName === "辽宁") {
-          tmpSeriesData = liaoningErrData
+          tmpSeriesData = window.mapObj.lang === 'en' ? liaoningErrData : liaoningErrZhData
         } else if(pName === "吉林") {
-          tmpSeriesData = jilinErrData
+          tmpSeriesData = window.mapObj.lang === 'en' ? jilinErrData : jilinErrZhData
         }
       } else {
-        var tmpSeriesData = seriesData;
+        var tmpSeriesData = window.mapObj.lang === 'en' ? seriesData : seriesZhData;
         if(pName === "china") {
-          tmpSeriesData = seriesData
+          tmpSeriesData = window.mapObj.lang === 'en' ? seriesData : seriesZhData;
         } else if(pName === "黑龙江") {
-          tmpSeriesData = heilongjiangData
+          tmpSeriesData = window.mapObj.lang === 'en' ? heilongjiangData : heilongjiangZhData;
         } else if(pName === "辽宁") {
-          tmpSeriesData = liaoningData
+          tmpSeriesData = window.mapObj.lang === 'en' ? liaoningData : liaoningZhData;
         } else if(pName === "吉林") {
-          tmpSeriesData = jilinData
+          tmpSeriesData = window.mapObj.lang === 'en' ? jilinData : jilinZhData;
         }
       }
 
@@ -459,6 +817,8 @@
         dataRange: flg === 1 ? {
             x: 'left',
             y: 'bottom',
+            itemWidth: 24,
+            itemHeight: 12,
             splitList: [
                 {start: 5},
                 {start: 4, end: 5},
@@ -472,6 +832,8 @@
         {
             x: 'left',
             y: 'bottom',
+            itemWidth: 24,
+            itemHeight: 12,
             splitList: [
                 {start: 1500},
                 {start: 900, end: 1500},
@@ -505,7 +867,7 @@
                       show: true,//显示省份标签
                       textStyle:{
                         color:"#000000",
-                        fontFamily: "Times New Roman",
+                        fontFamily: window.mapObj.fontFamily,
                         fontWeight: "bold",
                         fontSize: window.mapObj.fontSize
                       }//省份标签字体颜色
@@ -566,8 +928,15 @@
 
     // 展示对应的省
     function showProvince(pName, Chinese_, flg) {
+      console.log('$' + pName + 'JS', './js/map/province/' + pName + '.js', '*************');
       //这写省份的js都是通过在线构建工具生成的，保存在本地，需要时加载使用即可，最好不要一开始全部直接引入。
-      loadBdScript('$' + pName + 'JS', './js/map/province/' + pName + '.js', function () {
+      var map = 'map'
+      if(window.mapObj.lang === 'zh') {
+        map = 'mapZh'
+      } else {
+        map = 'map'
+      }
+      loadBdScript('$' + pName + 'JS', './js/'+ map +'/province/' + pName + '.js', function () {
         initEcharts(Chinese_, flg, flg);
       });
     }
