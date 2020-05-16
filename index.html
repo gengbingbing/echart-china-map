@@ -13,6 +13,7 @@
       height: 800px;
       margin: auto;
 	    margin-top: 20px;
+      margin-bottom: 200px;
     }
     #box{
         display:none;
@@ -49,7 +50,7 @@
           <label style=" line-height: 34px;">选择地图：</label>
           <div class="dropdown" style="display: inline;">
             <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              新冠分布地图
+              新冠地图
               <span class="caret"></span>
             </button>
             <ul class="dropdown-menu" id="mapType" aria-labelledby="dropdownMenu2">
@@ -60,7 +61,7 @@
         </div>
         <div class="col-md-4">
           <label style=" line-height: 34px;">字体大小：</label>
-          <div class="input-group" style="width: 280px; display: inline-flex;">
+          <div class="input-group" style="width: 45px; display: inline-flex;">
             <input id="fontSize" type="text" class="form-control" value="16" placeholder="输入字体大小...">
             <span class="input-group-btn">
               <button onclick="changeSize()" class="btn btn-default" type="button">Go!</button>
@@ -71,7 +72,7 @@
           <label style=" line-height: 34px;">选择分辨率：</label>
           <div class="dropdown" style="display: inline;">
             <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              地图分辨率
+              地 图 分 辨 率
               <span class="caret"></span>
             </button>
             <ul class="dropdown-menu" id="dropdown-menu-fenbianlv" aria-labelledby="dropdownMenu2">
@@ -106,15 +107,36 @@
               <span class="caret"></span>
             </button>
             <ul class="dropdown-menu" id="fontFamily" aria-labelledby="dropdownMenu2">
+              <li><a href="#">Times New Roman</a></li>
               <li><a href="#">微软雅黑</a></li>
               <li><a href="#">黑体</a></li>
-              <li><a href="#">Times New Roman</a></li>
+              <li><a href="#">宋体</a></li>
+              <li><a href="#">Arial Black</a></li>
+              <li><a href="#">Traditional Arabic</a></li>
             </ul>
           </div>
         </div>
 
         <div class="col-md-4">
-          <button onclick="downLoad()" style="background-color: #039bff; color: #FFFFFF;" type="button" class="btn btn-default">下载为图片</button>
+          <label style=" line-height: 34px;">南 海 诸 岛：</label>
+          <div class="dropdown" style="display: inline;">
+            <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              南海诸岛 显隐
+              <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" id="NanHai" aria-labelledby="dropdownMenu2">
+              <li><a href="#">显示文字</a></li>
+              <li><a href="#">隐藏文字</a></li>
+              <li><a href="#">显示南海诸岛</a></li>
+              <li><a href="#">隐藏南海诸岛</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-12" style="text-align: center; margin-top: 30px;">
+          <button onclick="downLoad()" style="background-color: #039bff; color: #FFFFFF;" type="button" class="btn btn-default">保存为图片</button>
         </div>
       </div>
     </div>
@@ -126,7 +148,9 @@
       flg: 0,
       fontSize: '16',
       lang: 'en',
-      fontFamily: 'Times New Roman'
+      fontFamily: 'Times New Roman',
+      nanHaiLabelShowHide: true,
+      nanHaiShowHide: 1,
     }
 
     var heilongjiangData = [
@@ -482,18 +506,82 @@
         });
       }
     })
+
+    // 南海诸岛问题
+    $('#NanHai').on('click', function (e) {
+      if(e.target.text === "显示文字" ) {
+        window.mapObj.nanHaiLabelShowHide = true;
+      } else if(e.target.text === "隐藏文字") {
+        window.mapObj.nanHaiLabelShowHide = false;
+      } else if(e.target.text === "显示南海诸岛") {
+        window.mapObj.nanHaiShowHide = 1;
+        window.mapObj.nanHaiLabelShowHide = true;
+      } else if(e.target.text === "隐藏南海诸岛") {
+        window.mapObj.nanHaiShowHide = 0;
+        window.mapObj.nanHaiLabelShowHide = false;
+      }
+
+      var len = seriesData.length - 1;
+      var lenErr = seriesErrData.length - 1;
+      if(seriesData[len].name === "南海诸岛") {
+        seriesData = seriesData.slice(0, len);
+        seriesZhData = seriesZhData.slice(0, len);
+      }
+      if(seriesErrData[lenErr].name === "南海诸岛") {
+        seriesErrData = seriesErrData.slice(0, lenErr);
+        seriesErrZhData = seriesErrZhData.slice(0, lenErr);
+      }
+      seriesData.push({
+        name:"南海诸岛",
+        label: {
+          show: window.mapObj.nanHaiLabelShowHide // 隐藏文字
+        },
+        itemStyle: {
+          normal: {
+            opacity: window.mapObj.nanHaiShowHide,
+          }
+        }
+      });
+      seriesErrData.push({
+        name:"南海诸岛",
+        label: {
+          show: window.mapObj.nanHaiLabelShowHide // 隐藏文字
+        },
+        itemStyle: {
+          normal: {
+            opacity: window.mapObj.nanHaiShowHide,
+          }
+        }
+      });
+      seriesZhData.push({
+        name:"南海诸岛",
+        label: {
+          show: window.mapObj.nanHaiLabelShowHide // 隐藏文字
+        },
+        itemStyle: {
+          normal: {
+            opacity: window.mapObj.nanHaiShowHide,
+          }
+        }
+      });
+      seriesErrZhData.push({
+        name:"南海诸岛",
+        label: {
+          show: window.mapObj.nanHaiLabelShowHide // 隐藏文字
+        },
+        itemStyle: {
+          normal: {
+            opacity: window.mapObj.nanHaiShowHide,
+          }
+        }
+      });
+      initEcharts("china", "中国", window.mapObj.flg);
+    })
     
     // 切换字体
     $('#fontFamily').on('click', function (e) {
-      if(e.target.text === "微软雅黑" ) {
-        window.mapObj.fontFamily = "微软雅黑";
-        initEcharts("china", "中国", window.mapObj.flg);
-      } else if(e.target.text === "黑体") {
-        window.mapObj.fontFamily = "黑体";
-      } else {
-        window.mapObj.fontFamily = "Times New Roman";
-        initEcharts("china", "中国", window.mapObj.flg);
-      }
+      window.mapObj.fontFamily = e.target.text;
+      initEcharts("china", "中国", window.mapObj.flg);
     })
 
     function downLoad() {
@@ -528,13 +616,8 @@
     var provinces = ['shanghai', 'hebei', 'shanxi', 'neimenggu', 'Liaoning', 'Jilin', 'Heilongjiang', 'jiangsu', 'zhejiang', 'anhui', 'fujian', 'jiangxi', 'shandong', 'henan', 'hubei', 'hunan', 'guangdong', 'guangxi', 'hainan', 'sichuan', 'guizhou', 'yunnan', 'xizang', 'shanxi1', 'gansu', 'qinghai', 'ningxia', 'xinjiang', 'beijing', 'tianjin', 'chongqing', 'xianggang', 'aomen'];
 
     var provincesText = ['上海', '河北', '山西', '内蒙古', '辽宁', '吉林', '黑龙江', '江苏', '浙江', '安徽', '福建', '江西', '山东', '河南', '湖北', '湖南', '广东', '广西', '海南', '四川', '贵州', '云南', '西藏', '陕西', '甘肃', '青海', '宁夏', '新疆', '北京', '天津', '重庆', '香港', '澳门'];
-	
+
     var seriesData = [{
-      name:"南海诸岛",
-      label: {
-        show: false // 隐藏文字
-      }
-    }, {
       name: 'Beijing',
       value: 418,
     }, {
