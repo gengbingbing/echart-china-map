@@ -7,8 +7,8 @@
   <title>地图钻取</title>
   <style>
     #china-map {
-      width: 1600px;
-      height: 1200px;
+      width: 1000px;
+      height: 800px;
       margin: auto;
 	  margin-top: 20px;
     }
@@ -35,6 +35,9 @@
   <script src="http://www.jq22.com/jquery/jquery-1.10.2.js"></script>
   <script type="text/javascript" src="https://cdn.bootcss.com/echarts/4.2.0-rc.2/echarts.min.js"></script>
   <script type="text/javascript" src="./js/map/china.js"></script>
+  <script type="text/javascript" src="./js/map/province/liaoning.js"></script>
+  <script type="text/javascript" src="./js/map/province/jilin.js"></script>
+  <script type="text/javascript" src="./js/map/province/heilongjiang.js"></script>
 </head>
 
 <body>
@@ -90,13 +93,365 @@
     var seriesData = [
       {
         name: 'Liaoning',
-        value: 1
+        value: 1,
       }, {
         name: 'Heilongjiang',
         value: 14
       },{
         name: 'Jilin',
         value: 1
+      }, {
+        name: 'Beijing',
+        value: 418,
+        label: {
+          show: false // 隐藏文字
+        },
+        itemStyle: {
+          normal: {
+            opacity:0,
+          }
+        }
+      }, {
+        name: 'Tianjin',
+        value: 136,
+        label: {
+          show: false // 隐藏文字
+        },
+        itemStyle: {
+          normal: {
+            opacity:0,
+          }
+        }
+      }, {
+        name: 'Shanghai',
+        value: 338,
+        label: {
+          show: false // 隐藏文字
+        },
+        itemStyle: {
+          normal: {
+            opacity:0,
+          }
+        }
+      }, {
+        name: 'Chongqing',
+        value: 576,
+        label: {
+          show: false // 隐藏文字
+        },
+        itemStyle: {
+          normal: {
+            opacity:0,
+          }
+        }
+      }, {
+        name: 'Hebei',
+        value: 318,
+        label: {
+          show: false // 隐藏文字
+        },
+        itemStyle: {
+          normal: {
+            opacity:0,
+          }
+        }
+      }, {
+        name: 'Henan',
+        value: 1272,
+        label: {
+          show: false // 隐藏文字
+        },
+        itemStyle: {
+          normal: {
+            opacity:0,
+          }
+        }
+      }, {
+        name: 'Yunnan',
+        value: 174,
+        label: {
+          show: false // 隐藏文字
+        },
+        itemStyle: {
+          normal: {
+            opacity:0,
+          }
+        }
+      }, {
+        name: 'Hunan',
+        value: 1018,
+        label: {
+          show: false // 隐藏文字
+        },
+        itemStyle: {
+          normal: {
+            opacity:0,
+          }
+        }
+      }, {
+        name: 'Anhui',
+        value: 990,
+        label: {
+          show: false // 隐藏文字
+        },
+        itemStyle: {
+          normal: {
+            opacity:0,
+          }
+        }
+      }, {
+        name: 'Shandong',
+        value: 758,
+        label: {
+          show: false // 隐藏文字
+        },
+        itemStyle: {
+          normal: {
+            opacity:0,
+          }
+        }
+      }, {
+        name: 'Xinjiang',
+        value: 76,
+        label: {
+          show: false // 隐藏文字
+        },
+        itemStyle: {
+          normal: {
+            opacity:0,
+          }
+        }
+      }, {
+        name: 'Jiangsu',
+        value: 631,
+        label: {
+          show: false // 隐藏文字
+        },
+        itemStyle: {
+          normal: {
+            opacity:0,
+          }
+        }
+      }, {
+        name: 'Zhejiang',
+        value: 1215,
+        label: {
+          show: false // 隐藏文字
+        },
+        itemStyle: {
+          normal: {
+            opacity:0,
+          }
+        }
+      }, {
+        name: 'Jiangxi',
+        value: 935,
+        label: {
+          show: false // 隐藏文字
+        },
+        itemStyle: {
+          normal: {
+            opacity:0,
+          }
+        }
+      }, {
+        name: 'Hubei',
+        value: 67466,
+        label: {
+          show: false // 隐藏文字
+        },
+        itemStyle: {
+          normal: {
+            opacity:0,
+          }
+        }
+      }, {
+        name: 'Guangxi',
+        value: 252,
+        label: {
+          show: false // 隐藏文字
+        },
+        itemStyle: {
+          normal: {
+            opacity:0,
+          }
+        }
+      }, {
+        name: 'Gansu',
+        value: 91,
+        label: {
+          show: false // 隐藏文字
+        },
+        itemStyle: {
+          normal: {
+            opacity:0,
+          }
+        }
+      }, {
+        name: 'Shanxi',
+        value: 133,
+        label: {
+          show: false // 隐藏文字
+        },
+        itemStyle: {
+          normal: {
+            opacity:0,
+          }
+        }
+      }, {
+        name: 'Inner Mongolia',
+        value: 75,
+        label: {
+          show: false // 隐藏文字
+        },
+        itemStyle: {
+          normal: {
+            opacity:0,
+          }
+        }
+      }, {
+        name: 'Shaanxi',
+        value: 245,
+        label: {
+          show: false // 隐藏文字
+        },
+        itemStyle: {
+          normal: {
+            opacity:0,
+          }
+        }
+      }, {
+        name: 'Fujian',
+        value: 296,
+        label: {
+          show: false // 隐藏文字
+        },
+        itemStyle: {
+          normal: {
+            opacity:0,
+          }
+        }
+      }, {
+        name: 'Guizhou',
+        value: 146,
+        label: {
+          show: false // 隐藏文字
+        },
+        itemStyle: {
+          normal: {
+            opacity:0,
+          }
+        }
+      }, {
+        name: 'Guangdong',
+        value: 1350,
+        label: {
+          show: false // 隐藏文字
+        },
+        itemStyle: {
+          normal: {
+            opacity:0,
+          }
+        }
+      }, {
+        name: 'Qinghai',
+        value: 18,
+        label: {
+          show: false // 隐藏文字
+        },
+        itemStyle: {
+          normal: {
+            opacity:0,
+          }
+        }
+      }, {
+        name: 'Tibet',
+        value: 1,
+        label: {
+          show: false // 隐藏文字
+        },
+        itemStyle: {
+          normal: {
+            opacity:0,
+          }
+        }
+      }, {
+        name: 'Sichuan',
+        value: 539,
+        label: {
+          show: false // 隐藏文字
+        },
+        itemStyle: {
+          normal: {
+            opacity:0,
+          }
+        }
+      }, {
+        name: 'Ningxia',
+        value: 75,
+        label: {
+          show: false // 隐藏文字
+        },
+        itemStyle: {
+          normal: {
+            opacity:0,
+          }
+        }
+      }, {
+        name: 'Hainan',
+        value: 168,
+        label: {
+          show: false // 隐藏文字
+        },
+        itemStyle: {
+          normal: {
+            opacity:0,
+          }
+        }
+      }, {
+        name: 'Taiwan',
+        value: 42,
+        label: {
+          show: false // 隐藏文字
+        },
+        itemStyle: {
+          normal: {
+            opacity:0,
+          }
+        }
+      }, {
+        name: 'Hong Kong',
+        value: 104,
+        label: {
+          show: false // 隐藏文字
+        },
+        itemStyle: {
+          normal: {
+            opacity:0,
+          }
+        }
+      }, {
+        name: 'Macau',
+        value: 10,
+        label: {
+          show: false // 隐藏文字
+        },
+        itemStyle: {
+          normal: {
+            opacity:0,
+          }
+        }
+      }, {
+        name: '南海诸岛',
+        value: 10,
+        label: {
+          show: false // 隐藏文字
+        },
+        itemStyle: {
+          normal: {
+            opacity:0,
+          }
+        }
       }
     ];
 
